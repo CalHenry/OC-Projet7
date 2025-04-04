@@ -1,7 +1,7 @@
 [project]
 authors = [{name = "Calixte Henry", email = "chckt316@etik.com"}]
 dependencies = []
-name = "Project7"
+name = "Projet7"
 requires-python = ">= 3.11"
 version = "0.1.0"
 
@@ -14,13 +14,15 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64"]
 
 [tool.pixi.pypi-dependencies]
-project7 = { path = ".", editable = true }
+projet7 = { path = ".", editable = true }
 
 [tool.pixi.tasks]
 
 [tool.pixi.dependencies]
-polars = ">=1.26.0,<2"
+libgfortran5 = { version = "==14.2.0", build = "h6c33f7e_1" }
+python = ">=3.13.2,<3.14"
 numpy = ">=2.2.4,<3"
+ipykernel = ">=6.29.5,<7"
+polars = ">=1.26.0,<2"
+pandas = ">=2.2.3,<3"
 scikit-learn = ">=1.6.1,<2"
-matplotlib = ">=3.10.1,<4"
-seaborn = ">=0.13.2,<0.14"
