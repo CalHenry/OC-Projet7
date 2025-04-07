@@ -1,6 +1,5 @@
 [project]
 authors = [{name = "Calixte Henry", email = "chckt316@etik.com"}]
-dependencies = []
 name = "Projet7"
 requires-python = ">= 3.11"
 version = "0.1.0"
