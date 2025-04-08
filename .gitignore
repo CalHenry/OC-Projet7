@@ -14,4 +14,4 @@ mlruns.db
 data/
 
 # apple
-.DS_Store
+**/.DS_Store
