@@ -10,5 +10,8 @@ outputs/
 mlruns.db
 **/basic_auth.db
 
+# 
+data/
+
 # apple
 .DS_Store
