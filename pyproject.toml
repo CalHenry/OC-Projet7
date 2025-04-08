@@ -18,7 +18,7 @@ projet7 = { path = ".", editable = true }
 [tool.pixi.tasks]
 
 [tool.pixi.dependencies]
-libgfortran5 = { version = "==14.2.0", build = "h6c33f7e_1" }
+libgfortran5 = { version = "==14.2.0", build = "h6c33f7e_1" } # this because of a bug with macos 15.4. We manually import this numpy dependency
 python = ">=3.13.2,<3.14"
 numpy = ">=2.2.4,<3"
 ipykernel = ">=6.29.5,<7"
