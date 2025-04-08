@@ -9,3 +9,6 @@ mlartifacts/
 outputs/
 mlruns.db
 **/basic_auth.db
+
+# apple
+.DS_Store
