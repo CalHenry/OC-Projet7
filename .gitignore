@@ -12,6 +12,7 @@ mlruns.db
 
 # 
 data/
+figures/
 
 # apple
 **/.DS_Store
