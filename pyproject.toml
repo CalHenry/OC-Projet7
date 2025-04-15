@@ -19,7 +19,7 @@ projet7 = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
 libgfortran5 = { version = "==14.2.0", build = "h6c33f7e_1" } # this because of a bug with macos 15.4. We manually import this numpy dependency
-python = ">=3.13.2,<3.14"
+python = "=3.12.10"
 numpy = ">=2.2.4,<3"
 ipykernel = ">=6.29.5,<7"
 polars = ">=1.26.0,<2"
@@ -32,3 +32,10 @@ tqdm = ">=4.67.1,<5"
 yellowbrick = ">=1.5,<2"
 lightgbm = ">=4.6.0,<5"
 evidently = ">=0.4.36,<0.5"
+
+[tool.pixi.feature.evidently-env.dependencies]
+
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+evidently-env = ["evidently-env"]
