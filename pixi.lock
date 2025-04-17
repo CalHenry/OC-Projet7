@@ -3623,7 +3623,7 @@ packages:
 - pypi: .
   name: projet7
   version: 0.1.0
-  sha256: c8a98aa22d9727c587e5cbf3108b3645f2c254f3c6c71916f0a2a2708df404c7
+  sha256: 33b7f51def4d266fa752f29721e8299f52ef1cd778e4e3c51916b66ec40569eb
   requires_python: '>=3.11'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/prometheus-cpp-1.3.0-h0967b3e_0.conda

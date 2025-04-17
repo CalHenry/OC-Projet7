@@ -33,6 +33,7 @@ yellowbrick = ">=1.5,<2"
 lightgbm = ">=4.6.0,<5"
 evidently = ">=0.4.36,<0.5"
 shap = ">=0.47.1,<0.48"
+fastapi = ">=0.115.12,<0.116"
 
 [tool.pixi.feature.evidently-env.dependencies]
 
