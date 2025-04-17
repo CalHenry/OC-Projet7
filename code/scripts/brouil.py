@@ -260,3 +260,83 @@ class Model:
 # load data with .load_data
 # find best params with GridSearchCV using .find_best_params
 # evaluate on test set with .evaluate ???
+
+
+# ***********************************************************************************************
+
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+
+
+def cleaning(features, test_features, print_shape=True):
+    """Fonction cleaning finale using sklearn Pipeline"""
+    # Extract the ids
+    train_ids = features["SK_ID_CURR"]
+    test_ids = test_features["SK_ID_CURR"]
+
+    # Extract the labels for training
+    labels = features["TARGET"]
+
+    # Remove the ids and target
+    features = features.drop(columns=["SK_ID_CURR", "TARGET"])
+    test_features = test_features.drop(columns=["SK_ID_CURR"])
+
+    categorical_columns = features.select_dtypes(
+        include=["object", "category"]
+    ).columns.tolist()
+    numerical_columns = features.select_dtypes(
+        include=["int64", "float64"]
+    ).columns.tolist()
+
+    # preprocessing pipelines
+    numerical_pipeline = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", MinMaxScaler(feature_range=(0, 1))),
+        ]
+    )
+
+    categorical_pipeline = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            ("encoder", OneHotEncoder(sparse_output=False, handle_unknown="ignore")),
+        ]
+    )
+
+    # Combine the preprocessing pipelines
+    preprocessor = ColumnTransformer(
+        [
+            ("numerical", numerical_pipeline, numerical_columns),
+            ("categorical", categorical_pipeline, categorical_columns),
+        ]
+    )
+
+    # Fit the preprocessor to the training data and transform both datasets
+    features_transformed = preprocessor.fit_transform(features)
+    test_features_transformed = preprocessor.transform(test_features)
+
+    # Get feature names after one-hot encoding
+    # First, get numerical feature names directly
+    feature_names = numerical_columns.copy()
+
+    # Then add categorical feature names after one-hot encoding
+    if categorical_columns:
+        ohe = preprocessor.named_transformers_["categorical"].named_steps["encoder"]
+        categorical_feature_names = ohe.get_feature_names_out(categorical_columns)
+        feature_names.extend(categorical_feature_names)
+
+    if print_shape:
+        print("Training Data Shape: ", features_transformed.shape)
+        print("Testing Data Shape: ", test_features_transformed.shape)
+
+    return (
+        feature_names,
+        labels,
+        features_transformed,
+        test_features_transformed,
+        train_ids,
+        test_ids,
+        preprocessor,
+    )
