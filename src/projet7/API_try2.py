@@ -1,11 +1,15 @@
+from typing import List
+
 import joblib
-import numpy as np
+import pandas as pd
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from projet7.class_model import cleaning
+
 model_info = joblib.load("data/processed/lgbm_model_15_info.joblib")
-preprocessing_pipeline = joblib.load("data/processed/pipeline.joblib")
+preprocessor = joblib.load("data/processed/preprocessor_top15.joblib")
 
 print("Model:", model_info["name"])
 
@@ -32,15 +36,14 @@ class ClientData(BaseModel):
 
 # Create a Pydantic model for the response
 class PredictionRequest(BaseModel):
-    X_test: list | dict
+    inputs: List[ClientData]
 
 
 class PredictionResponse(BaseModel):
-    probabilities: list
-    binary_predictions: list
+    probabilities: List[float]
+    binary_predictions: List[int]
 
 
-# Initialize the FastAPI application
 app = FastAPI(
     title="Credit Risk Prediction API",
     description="API for predicting if a client will repay a credit",
@@ -56,11 +59,11 @@ def read_root():
 @app.post("/predict", response_model=PredictionResponse)
 def predict(request: PredictionRequest):
     try:
-        # Convert the input data to a numpy array
-        X_test = np.array(request.X_test)
+        # Convert Pydantic models to a pandas DataFrame
+        input_data = pd.DataFrame([client.dict() for client in request.inputs])
 
-        # Apply the preprocessing pipeline
-        X_test_processed = preprocessing_pipeline.transform(X_test)
+        # Apply your preprocessing function
+        X_test_processed = cleaning(input_data, preprocessor_pipeline=preprocessor)
 
         # Get prediction probabilities
         y_pred_proba = model_info["best_model"].predict_proba(X_test_processed)[:, 1]

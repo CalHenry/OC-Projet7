@@ -2,6 +2,7 @@ import requests
 
 url = "http://127.0.0.1:8000/predict/"
 
+
 data = {
     "ORGANIZATION_TYPE": "Kindergarten",
     "DAYS_EMPLOYED": -2329,
