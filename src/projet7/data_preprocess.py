@@ -1,5 +1,8 @@
-def cleaning(features, preprocessor_pipeline, print_shape=True):
+def cleaning(features, preprocessor_pipeline):
     """Fonction cleaning finale using sklearn Pipeline"""
+
+    if "SK_ID_CURR" in features.columns:
+        features = features.drop(columns=["SK_ID_CURR"])
 
     categorical_columns = features.select_dtypes(
         include=["object", "category"]
@@ -22,5 +25,14 @@ def cleaning(features, preprocessor_pipeline, print_shape=True):
         ]
         categorical_feature_names = ohe.get_feature_names_out(categorical_columns)
         feature_names.extend(categorical_feature_names)
+
+    return features_transformed
+
+
+def cleaning2(features, preprocessor_pipeline):
+    """Fonction cleaning finale using sklearn Pipeline"""
+
+    # Fit the preprocessor to the training data and transform both datasets
+    features_transformed = preprocessor_pipeline.transform(features)
 
     return features_transformed

@@ -2,14 +2,16 @@ from typing import List
 
 import joblib
 import pandas as pd
-import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from projet7.data_preprocess import cleaning
+from projet7.data_preprocess import cleaning2
 
 model_info = joblib.load("models/lgbm_model_15_info.joblib")
-preprocessor = joblib.load("models/pipelines/processed/preprocessor_top15.joblib")
+preprocessor = joblib.load("models/pipelines/preprocessor_top15.joblib")
+
+# Load the test set
+test_set = joblib.load("data/processed/app_test_domain_top15.joblib")
 
 print("Model:", model_info["name"])
 
@@ -40,8 +42,12 @@ class PredictionRequest(BaseModel):
 
 
 class PredictionResponse(BaseModel):
-    probabilities: List[float]
-    binary_predictions: List[int]
+    predict_proba: List[float]
+    binary_prediction: List[int]
+
+
+class ClientIDRequest(BaseModel):
+    client_id: int
 
 
 app = FastAPI(
@@ -51,11 +57,6 @@ app = FastAPI(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the API"}
-
-
 @app.post("/predict", response_model=PredictionResponse)
 def predict(request: PredictionRequest):
     try:
@@ -63,7 +64,7 @@ def predict(request: PredictionRequest):
         input_data = pd.DataFrame([client.dict() for client in request.inputs])
 
         # Apply your preprocessing function
-        X_test_processed = cleaning(input_data, preprocessor_pipeline=preprocessor)
+        X_test_processed = cleaning2(input_data, preprocessor_pipeline=preprocessor)
 
         # Get prediction probabilities
         y_pred_proba = model_info["best_model"].predict_proba(X_test_processed)[:, 1]
@@ -72,23 +73,34 @@ def predict(request: PredictionRequest):
         y_pred_binary = (y_pred_proba >= model_info["best_threshold"]).astype(int)
 
         return PredictionResponse(
-            probabilities=y_pred_proba.tolist(),
-            binary_predictions=y_pred_binary.tolist(),
+            predict_proba=y_pred_proba.tolist(),
+            binary_prediction=y_pred_binary.tolist(),
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@app.get("/model_info")
-def get_model_info():
+@app.post("/predict_by_id", response_model=PredictionResponse)
+def predict_by_id(request: ClientIDRequest):
     try:
-        # Return the model information as a JSON
-        model_info_fromAPI = model_info.get_model_info()
-        return model_info_fromAPI
+        # Retrieve client data from the test set using the client ID
+        client_data = test_set[test_set["SK_ID_CURR"] == request.client_id]
+
+        if client_data.empty:
+            raise HTTPException(status_code=404, detail="Client ID not found")
+
+        # Apply your preprocessing function
+        X_test_processed = cleaning2(client_data, preprocessor_pipeline=preprocessor)
+
+        # Get prediction probabilities
+        y_pred_proba = model_info["best_model"].predict_proba(X_test_processed)[:, 1]
+
+        # Apply the custom threshold to get binary predictions
+        y_pred_binary = (y_pred_proba >= model_info["best_threshold"]).astype(int)
+
+        return PredictionResponse(
+            predict_proba=y_pred_proba.tolist(),
+            binary_prediction=y_pred_binary.tolist(),
+        )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-
-# For running the application locally
-if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
