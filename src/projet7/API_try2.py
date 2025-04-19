@@ -6,10 +6,10 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from projet7.class_model import cleaning
+from projet7.data_preprocess import cleaning
 
-model_info = joblib.load("data/processed/lgbm_model_15_info.joblib")
-preprocessor = joblib.load("data/processed/preprocessor_top15.joblib")
+model_info = joblib.load("models/lgbm_model_15_info.joblib")
+preprocessor = joblib.load("models/pipelines/processed/preprocessor_top15.joblib")
 
 print("Model:", model_info["name"])
 
@@ -82,7 +82,7 @@ def predict(request: PredictionRequest):
 @app.get("/model_info")
 def get_model_info():
     try:
-        # Return the model information as a JSON response
+        # Return the model information as a JSON
         model_info_fromAPI = model_info.get_model_info()
         return model_info_fromAPI
     except Exception as e:
