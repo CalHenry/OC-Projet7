@@ -14,5 +14,7 @@ mlruns.db
 data/
 figures/
 
+**/__pycache__
+
 # apple
 **/.DS_Store

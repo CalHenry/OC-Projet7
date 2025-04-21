@@ -9,11 +9,11 @@ This application allows you to predict credit risk using our model in two ways:
 2. By entering client information manually (for new clients)
 """)
 
-# Create tabs for the two different methods
+# 2 tabs for the two different methods
 tab1, tab2 = st.tabs(["Predict by Client ID", "Predict by Client Information"])
 
 # Define API endpoints
-API_ENDPOINT = "http://localhost:8000"  # Update this to your API host
+API_ENDPOINT = "http://localhost:8000"  # Update this to the API host
 
 # Tab 1: Predict by Client ID
 with tab1:
@@ -114,7 +114,6 @@ with tab2:
         "Realtor",
         "Industry: type 6",
     ]
-
     occupation_types = [
         "Laborers",
         "Core staff",
@@ -149,9 +148,7 @@ with tab2:
         "Lower secondary",
         "Academic degree",
     ]
-
     gender_options = ["M", "F", "XNA"]
-
     weekdays = [
         "WEDNESDAY",
         "MONDAY",
@@ -162,9 +159,7 @@ with tab2:
         "TUESDA",
     ]
     yes_no_options = ["Y", "N"]
-
     contract_types = ["Cash loans", "Revolving loans"]
-
     income_types = [
         "Working",
         "State servant",
@@ -175,7 +170,6 @@ with tab2:
         "Businessman",
         "Maternity leave",
     ]
-
     housing_types = [
         "House / apartment",
         "Rented apartment",
@@ -194,7 +188,6 @@ with tab2:
         "Others",
         "Monolithic",
     ]
-
     type_suite = [
         "Unaccompanied",
         "Family",
@@ -236,7 +229,6 @@ with tab2:
         submit_button = st.form_submit_button("Get Prediction")
 
     if submit_button:
-        # Create client data dictionary
         client_data = {
             "ORGANIZATION_TYPE": organization_type,
             "DAYS_EMPLOYED": days_employed,
