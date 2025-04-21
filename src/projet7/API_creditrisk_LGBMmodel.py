@@ -5,8 +5,6 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from projet7.data_preprocess import cleaning2
-
 model_info = joblib.load("models/lgbm_model_15_info.joblib")
 preprocessor = joblib.load("models/pipelines/preprocessor_top15.joblib")
 
