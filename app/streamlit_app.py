@@ -55,29 +55,91 @@ with tab2:
 
     # Define the expected values for categorical variables
     organization_types = [
-        "Business Entity Type 1",
-        "Business Entity Type 2",
         "Business Entity Type 3",
-        "Self-employed",
+        "School",
         "Government",
+        "Religion",
         "Other",
-    ]  # Replace with actual values
+        "XNA",
+        "Electricity",
+        "Medicine",
+        "Business Entity Type 2",
+        "Self-employed",
+        "Transport: type 2",
+        "Construction",
+        "Housing",
+        "Kindergarten",
+        "Trade: type 7",
+        "Industry: type 11",
+        "Military",
+        "Services",
+        "Security Ministries",
+        "Transport: type 4",
+        "Industry: type 1",
+        "Emergency",
+        "Security",
+        "Trade: type 2",
+        "University",
+        "Transport: type 3",
+        "Police",
+        "Business Entity Type 1",
+        "Postal",
+        "Industry: type 4",
+        "Agriculture",
+        "Restaurant",
+        "Culture",
+        "Hotel",
+        "Industry: type 7",
+        "Trade: type 3",
+        "Industry: type 3",
+        "Bank",
+        "Industry: type 9",
+        "Insurance",
+        "Trade: type 6",
+        "Industry: type 2",
+        "Transport: type 1",
+        "Industry: type 12",
+        "Mobile",
+        "Trade: type 1",
+        "Industry: type 5",
+        "Industry: type 10",
+        "Legal Services",
+        "Advertising",
+        "Trade: type 5",
+        "Cleaning",
+        "Industry: type 13",
+        "Trade: type 4",
+        "Telecom",
+        "Industry: type 8",
+        "Realtor",
+        "Industry: type 6",
+    ]
+
     occupation_types = [
         "Laborers",
         "Core staff",
+        "Accountants",
         "Managers",
         "Drivers",
-        "High skill tech staff",
-        "Accountants",
+        "Sales staff",
+        "Cleaning staff",
+        "Cooking staff",
+        "Private service staff",
         "Medicine staff",
-        "Other",
-    ]  # Replace with actual values
+        "Security staff",
+        "High skill tech staff",
+        "Waiters/barmen staff",
+        "Low-skill Laborers",
+        "Realty agents",
+        "Secretaries",
+        "IT staff",
+        "HR staff",
+    ]
     family_status = [
         "Single / not married",
-        "Married",
-        "Civil marriage",
+        "MarriedCivil marriage",
         "Widow",
-        "Separated",
+        "Seprated",
         "Unknown",
     ]
     education_types = [
@@ -87,18 +149,22 @@ with tab2:
         "Lower secondary",
         "Academic degree",
     ]
-    gender_options = ["M", "F"]
+
+    gender_options = ["M", "F", "XNA"]
+
     weekdays = [
-        "MONDAY",
-        "TUESDAY",
         "WEDNESDAY",
+        "MONDAY",
         "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
         "SUNDAY",
+        "SATURDAY",
+        "FRIDAY",
+        "TUESDA",
     ]
     yes_no_options = ["Y", "N"]
+
     contract_types = ["Cash loans", "Revolving loans"]
+
     income_types = [
         "Working",
         "State servant",
@@ -109,22 +175,26 @@ with tab2:
         "Businessman",
         "Maternity leave",
     ]
+
     housing_types = [
         "House / apartment",
+        "Rented apartment",
         "With parents",
         "Municipal apartment",
-        "Rented apartment",
         "Office apartment",
         "Co-op apartment",
     ]
     walls_material = [
-        "Panel",
         "Stone, brick",
         "Block",
+        "",
+        "Panel",
+        "Mixed",
         "Wooden",
-        "Monolithic",
         "Others",
+        "Monolithic",
     ]
+
     type_suite = [
         "Unaccompanied",
         "Family",
@@ -133,6 +203,7 @@ with tab2:
         "Other_A",
         "Other_B",
         "Group of people",
+        "",
     ]
 
     # Create form for input fields
