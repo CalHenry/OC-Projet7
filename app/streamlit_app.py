@@ -13,7 +13,8 @@ This application allows you to predict credit risk using our model in two ways:
 tab1, tab2 = st.tabs(["Predict by Client ID", "Predict by Client Information"])
 
 # Define API endpoints
-API_ENDPOINT = "http://localhost:8000"  # Update this to the API host
+# API_ENDPOINT = "http://localhost:8000"
+API_ENDPOINT = "https://calhenry-api-mlmodel-2.hf.space"
 
 # Tab 1: Predict by Client ID
 with tab1:
@@ -36,12 +37,35 @@ with tab1:
                     st.metric("Risk Probability", f"{result['predict_proba'][0]:.4f}")
                 with col2:
                     prediction = (
-                        "High Risk"
+                        "Credit risky"
                         if result["binary_prediction"][0] == 1
-                        else "Low Risk"
+                        else "Credit possible"
                     )
-                    st.metric("Prediction", prediction)
 
+                    # Create a container for the metric
+                    metric_container = col2.container()
+
+                    # Apply color styling based on prediction
+                    if result["binary_prediction"][0] == 1:
+                        metric_container.markdown(
+                            f"""
+                            <div style="color: red;">
+                                <small>Prediction</small><br>
+                                <span style="font-size: 1.5rem; font-weight: bold;">{prediction}</span>
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
+                    else:
+                        metric_container.markdown(
+                            f"""
+                            <div style="color: green;">
+                                <small>Prediction</small><br>
+                                <span style="font-size: 1.5rem; font-weight: bold;">{prediction}</span>
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
             elif response.status_code == 404:
                 st.error("Client ID not found. Please try a different ID.")
             else:
@@ -264,12 +288,34 @@ with tab2:
                     st.metric("Risk Probability", f"{result['predict_proba'][0]:.4f}")
                 with col2:
                     prediction = (
-                        "High Risk"
+                        "Credit risky"
                         if result["binary_prediction"][0] == 1
-                        else "Low Risk"
+                        else "Credit possible"
                     )
-                    st.metric("Prediction", prediction)
+                    # Create a container for the metric
+                    metric_container = col2.container()
 
+                    # Apply color styling based on prediction
+                    if result["binary_prediction"][0] == 1:
+                        metric_container.markdown(
+                            f"""
+                            <div style="color: red;">
+                                <small>Prediction</small><br>
+                                <span style="font-size: 1.5rem; font-weight: bold;">{prediction}</span>
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
+                    else:
+                        metric_container.markdown(
+                            f"""
+                            <div style="color: green;">
+                                <small>Prediction</small><br>
+                                <span style="font-size: 1.5rem; font-weight: bold;">{prediction}</span>
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
             else:
                 st.error(f"Error: {response.text}")
         except Exception as e:

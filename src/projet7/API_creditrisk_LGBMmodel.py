@@ -89,7 +89,7 @@ def predict_by_id(request: ClientIDRequest):
             raise HTTPException(status_code=404, detail="Client ID not found")
 
         # Apply your preprocessing function
-        X_test_processed = cleaning2(client_data, preprocessor_pipeline=preprocessor)
+        X_test_processed = cleaning(client_data, preprocessor_pipeline=preprocessor)
 
         # Get prediction probabilities
         y_pred_proba = model_info["best_model"].predict_proba(X_test_processed)[:, 1]
