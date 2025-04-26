@@ -13,8 +13,10 @@ mlruns.db
 # 
 data/
 figures/
-
+**/test_request.py
 **/__pycache__
+
+
 
 # apple
 **/.DS_Store

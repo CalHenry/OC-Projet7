@@ -55,14 +55,18 @@ app = FastAPI(
 )
 
 
+@app.get("/", tags=["home"])
+def api_home():
+    return {"detail": "Welcome to FastAPI"}
+
+
 @app.post("/predict", response_model=PredictionResponse)
 def predict(request: PredictionRequest):
     try:
         # Convert Pydantic models to a pandas DataFrame
-        input_data = pd.DataFrame([client.dict() for client in request.inputs])
+        input_data = pd.DataFrame([client.model_dump() for client in request.inputs])
 
         # Apply your preprocessing function
-        # X_test_processed = cleaning2(input_data, preprocessor_pipeline=preprocessor)
         X_test_processed = preprocessor.transform(input_data)
 
         # Get prediction probabilities
@@ -89,7 +93,7 @@ def predict_by_id(request: ClientIDRequest):
             raise HTTPException(status_code=404, detail="Client ID not found")
 
         # Apply your preprocessing function
-        X_test_processed = cleaning(client_data, preprocessor_pipeline=preprocessor)
+        X_test_processed = preprocessor.transform(client_data)
 
         # Get prediction probabilities
         y_pred_proba = model_info["best_model"].predict_proba(X_test_processed)[:, 1]
@@ -101,5 +105,8 @@ def predict_by_id(request: ClientIDRequest):
             predict_proba=y_pred_proba.tolist(),
             binary_prediction=y_pred_binary.tolist(),
         )
+    except HTTPException as http_exc:
+        raise http_exc
     except Exception as e:
+        # Handle other exceptions with a 400 status code
         raise HTTPException(status_code=400, detail=str(e))
